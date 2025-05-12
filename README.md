@@ -1,4 +1,4 @@
-## EXNO-3-DS
+![image](https://github.com/user-attachments/assets/3aac8cf6-3307-4398-8538-8414e4f338e5)## EXNO-3-DS
 
 # AIM:
 To read the given data and perform Feature Encoding and Transformation process and save the data to a file.
@@ -88,8 +88,87 @@ dfb=pd.concat([df,nd],axis=1)
 dfb1=df.copy()
 dfb
 ```
-
 ![image](https://github.com/user-attachments/assets/21ae6c26-563d-4f75-8fbc-e590ed8eba6d)
+```
+from category_encoders import TargetEncoder
+te=TargetEncoder()
+cc=df.copy()
+cc
+```
+![image](https://github.com/user-attachments/assets/74a788d7-f2c9-48f8-ad69-a7232e95dbd2)
+```
+import pandas as pd
+from scipy import stats
+import numpy as np
+df=pd.read_csv("/content/Data_to_Transform.csv")
+df
+```
+![image](https://github.com/user-attachments/assets/43e23172-3188-4313-b637-10966ace6d10)
+```
+df.skew()
+```
+![image](https://github.com/user-attachments/assets/76a23176-03b2-498c-8608-8053b0b3ee3f)
+```
+np.log(df["Highly Positive Skew"])
+```
+![image](https://github.com/user-attachments/assets/f46063d2-4af1-406f-9137-c2c08d71528b)
+```
+np.reciprocal(df["Highly Positive Skew"])
+```
+![image](https://github.com/user-attachments/assets/b1774462-9b9d-4d57-b964-55f7c6f05b09)
+```
+np.reciprocal(df["Moderate Negative Skew"])
+```
+![image](https://github.com/user-attachments/assets/1d3bb20b-7a1d-42b2-8f3f-89d2741169db)
+```
+np.square(df["Highly Positive Skew"])
+```
+![image](https://github.com/user-attachments/assets/7c8d3388-118b-44e6-bee5-050194f6b65f)
+```
+df["Highly positive Skew_boxcox"],parameters=stats.boxcox(df["Highly Positive Skew"])
+df
+```
+![image](https://github.com/user-attachments/assets/a8761cde-5490-4fe0-9604-8bf767a1fee7)
+```
+df['Moderate Negative Skew_yeojohnson'], parameters = stats.yeojohnson(df['Moderate Negative Skew'])
+from sklearn.preprocessing import QuantileTransformer
+Qt = QuantileTransformer(output_distribution="normal")
+df["Moderate Negative Skew_1"] = Qt.fit_transform(df[["Moderate Negative Skew"]])
+df
+
+```
+![image](https://github.com/user-attachments/assets/77f81e53-b660-49aa-ad41-fb2e5fca3489)
+```
+import matplotlib.pyplot as plt
+import seaborn as sns
+import statsmodels.api as sm
+import scipy.stats as stats
+sm.qqplot(df["Moderate Negative Skew"],line="45")
+plt.show()
+```
+![image](https://github.com/user-attachments/assets/39957220-62ab-4a5a-be23-8ae68640e5ac)
+```
+sm.qqplot(df["Moderate Negative Skew_1"],line="45")
+plt.show()
+```
+![image](https://github.com/user-attachments/assets/ee78d891-5410-4aea-8150-cd53e7236fd1)
+```
+df["Highly Negative Skew_1"] = Qt.fit_transform(df[["Highly Negative Skew"]])
+sm.qqplot(df["Highly Negative Skew"], line="45")
+plt.show()
+```
+![image](https://github.com/user-attachments/assets/d4ef225c-de47-4348-8e44-b8331f77e7be)
+```
+sm.qqplot(df["Highly Negative Skew_1"],line="45")
+plt.show()
+```
+![image](https://github.com/user-attachments/assets/27febd3c-0958-43d7-a833-a72a9dd3b2be)
+
+```
+sm.qqplot(np.reciprocal(df["Moderate Negative Skew"]),line="45")
+plt.show()
+```
+![image](https://github.com/user-attachments/assets/dc2ae9ef-863d-4bee-aaca-29ebc83daf24)
 
 # RESULT:
        # INCLUDE YOUR RESULT HERE
